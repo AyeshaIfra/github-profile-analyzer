@@ -1,20 +1,17 @@
 const mysql = require("mysql2");
 
-const db = mysql.createConnection({
- host: process.env.DB_HOST,
- user: process.env.DB_USER,
- password: process.env.DB_PASSWORD,
- database: process.env.DB_NAME,
-port: Number(process.env.DB_PORT)
+// ✅ Use POOL instead of single connection (VERY IMPORTANT for Vercel)
+const db = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  port: Number(process.env.DB_PORT),
+
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
-db.connect((err) => {
- if (err) {
-  console.log("DB connection failed");
-  console.log(err.message);
- } else {
-  console.log("MySQL Connected");
- }
-});
-
-module.exports = db;
+// ✅ Convert to promise-based API (clean + stable)
+module.exports = db.promise();
