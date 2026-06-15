@@ -1,5 +1,4 @@
 const db = require("../config/db");
-
 const { fetchGithubProfile } = require("../services/githubService");
 
 // ANALYZE PROFILE
@@ -9,7 +8,7 @@ exports.analyzeProfile = async (req, res) => {
 
     const data = await fetchGithubProfile(username);
 
-    db.query(
+    await db.query(
       `
       INSERT INTO github_profiles
       (username, name, followers, following, public_repos, profile_url, avatar_url)
@@ -31,63 +30,53 @@ exports.analyzeProfile = async (req, res) => {
         data.followers,
         data.following,
         data.public_repos
-      ],
-      (err, result) => {
-        // ✅ THIS IS WHERE YOU ADD THE FIX
-        if (err) {
-          console.log("DB ERROR:", err.message);
-          return res.status(500).json({
-            message: "Database error",
-            error: err.message
-          });
-        }
-
-        return res.json({
-          success: true,
-          username: data.login,
-          followers: data.followers,
-          publicRepos: data.public_repos
-        });
-      }
+      ]
     );
+
+    return res.json({
+      success: true,
+      username: data.login,
+      followers: data.followers,
+      publicRepos: data.public_repos
+    });
+
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
+    console.log("DB ERROR:", err.message);
+    return res.status(500).json({
+      message: "Database error",
       error: err.message
     });
   }
 };
 
 // GET ALL PROFILES
-exports.getProfiles = (req, res) => {
-  db.query("SELECT * FROM github_profiles", (err, result) => {
-    if (err) {
-      console.log("DB ERROR:", err.message);
-      return res.status(500).json({
-        message: "Database error",
-        error: err.message
-      });
-    }
-
-    res.json(result);
-  });
+exports.getProfiles = async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT * FROM github_profiles");
+    res.json(rows);
+  } catch (err) {
+    console.log("DB ERROR:", err.message);
+    res.status(500).json({
+      message: "Database error",
+      error: err.message
+    });
+  }
 };
 
 // GET SINGLE PROFILE
-exports.getProfile = (req, res) => {
-  db.query(
-    "SELECT * FROM github_profiles WHERE id=?",
-    [req.params.id],
-    (err, result) => {
-      if (err) {
-        console.log("DB ERROR:", err.message);
-        return res.status(500).json({
-          message: "Database error",
-          error: err.message
-        });
-      }
+exports.getProfile = async (req, res) => {
+  try {
+    const [rows] = await db.query(
+      "SELECT * FROM github_profiles WHERE id=?",
+      [req.params.id]
+    );
 
-      res.json(result);
-    }
-  );
+    res.json(rows);
+  } catch (err) {
+    console.log("DB ERROR:", err.message);
+    res.status(500).json({
+      message: "Database error",
+      error: err.message
+    });
+  }
 };

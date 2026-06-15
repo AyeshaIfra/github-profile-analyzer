@@ -1,6 +1,6 @@
-CREATE DATABASE IF NOT EXISTS github_analyzer;
+CREATE DATABASE IF NOT EXISTS railway;
 
-USE github_analyzer;
+USE railway;
 
 CREATE TABLE IF NOT EXISTS github_profiles (
 
