@@ -1,7 +1,11 @@
-const router=require("express").Router();
+const router =
+require("express")
+.Router();
 
-const controller=
-require("../controllers/profileController");
+const controller =
+require(
+"../controllers/profileController"
+);
 
 router.get(
 "/analyze/:username",
@@ -18,4 +22,5 @@ router.get(
 controller.getProfile
 );
 
-module.exports=router;
+module.exports =
+router;
