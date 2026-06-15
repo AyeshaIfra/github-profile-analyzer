@@ -1,119 +1,34 @@
 # GitHub Profile Analyzer API
 
-Backend service that fetches public GitHub profile information, stores insights in MySQL, and exposes APIs to retrieve analyzed profiles.
-
 ## Tech Stack
-
 - Node.js
 - Express.js
 - MySQL
-- GitHub Public API
+- GitHub API
 
----
+## Live API
+https://your-app.vercel.app/
 
-## Features
+## Endpoints
 
-- Analyze GitHub profile by username
-- Store profile insights in MySQL
-- Fetch all analyzed profiles
-- Fetch single analyzed profile
-- Prevent duplicate usernames
+### Analyze GitHub user
+GET /api/analyze/:username
 
----
+### Get all profiles
+GET /api/profiles
 
-## Installation
+### Get single profile
+GET /api/profiles/:id
 
-Clone repository
+## Setup Locally
 
-```bash
-git clone <repo-url>
-cd github-profile-analyzer
-```
-
-Install dependencies
-
-```bash
 npm install
-```
-
-Create environment variables
-
-```bash
-cp .env.example .env
-```
-
-Run server
-
-```bash
 npm run dev
-```
-
----
 
 ## Environment Variables
 
-```env
-PORT=5000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=github_analyzer
-```
-
----
-
-## API Endpoints
-
-### Analyze Profile
-
-```http
-GET /api/analyze/:username
-```
-
-Example:
-
-```http
-GET /api/analyze/octocat
-```
-
----
-
-### Fetch All Profiles
-
-```http
-GET /api/profiles
-```
-
----
-
-### Fetch Single Profile
-
-```http
-GET /api/profiles/:id
-```
-
----
-
-## Database
-
-Table:
-
-```text
-github_profiles
-```
-
----
-
-## Deployment
-
-Live URL:
-
-```text
-ADD_DEPLOYMENT_URL_HERE
-```
-
----
-
-## Author
-
-Ayesha Ifra
+DB_HOST=
+DB_USER=
+DB_PASSWORD=
+DB_NAME=
+PORT=
